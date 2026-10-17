@@ -32,7 +32,7 @@ Deno.serve(async (req: Request) => {
   if (!["content", "faq", "seo", "automation"].includes(task)) return new Response(JSON.stringify({ error: "Unsupported task" }), { status: 400, headers: cors });
   if (!prompt || prompt.length > 12000) return new Response(JSON.stringify({ error: "Prompt must contain 1–12000 characters" }), { status: 400, headers: cors });
 
-  const lang = body.language === "en" ? "English" : "Albanian (Kosovo)";
+  const lang = body.language === "en" ? "English" : body.language === "sr" ? "Serbian" : "Albanian (Kosovo)";
   const system = [
     "You are MikroTekos, a practical digital assistant for small businesses in Kosovo and the Balkans.",
     "Write in " + lang + " unless the user explicitly requests otherwise.",
@@ -49,6 +49,7 @@ Deno.serve(async (req: Request) => {
     const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Authorization": "Bearer " + apiToken, "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(20000),
       body: JSON.stringify({
         messages: [{ role: "system", content: system }, { role: "user", content: prompt }],
         temperature: 0.6,
