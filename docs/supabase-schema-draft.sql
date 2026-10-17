@@ -221,7 +221,7 @@ set search_path = ''
 as $
 begin
   if new.status = 'published'
-     and old.status is distinct from 'published'
+     and (tg_op = 'INSERT' or old.status is distinct from 'published')
      and coalesce(auth.role(), '') <> 'service_role'
      and coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') <> 'admin' then
     raise exception 'Publishing must be performed by the trusted publishing service';
@@ -230,7 +230,7 @@ begin
 end;
 $;
 drop trigger if exists published_sites_guard_publish on public.published_sites;
-create trigger published_sites_guard_publish before update on public.published_sites
+create trigger published_sites_guard_publish before insert or update on public.published_sites
 for each row execute function public.mikrotekos_guard_site_publish();
 
 create policy "Published sites are public and drafts are owner-only"
