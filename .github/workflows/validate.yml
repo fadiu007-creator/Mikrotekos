@@ -14,5 +14,7 @@ jobs:
           node-version: 22
       - name: Check inline JavaScript syntax and workspace markers
         run: node tests/check-inline-scripts.mjs
+      - name: Test business calculations and CSV helpers
+        run: node tests/business-core.test.mjs
       - name: Check whitespace errors
         run: git diff --check
