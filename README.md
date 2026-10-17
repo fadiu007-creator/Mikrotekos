@@ -36,6 +36,17 @@ The existing Supabase project zikos is shared with other apps. MikroTekos uses i
 4. **Abuse prevention:** the service-request table accepts only bounded insert payloads from anonymous visitors and exposes no anonymous read access. Before advertising the form widely, add CAPTCHA/rate limiting and operational monitoring.
 5. **Hosting:** the website editor's hosted-page workflow serves safe structured pages at view-site.html?slug=... on the same static domain. It does not create custom domains or deploy independent files to a separate Cloudflare site.
 
+## Real business workspace
+
+Open [workspace.html](workspace.html) for the business tools workspace:
+- Invoice and quotation creation with deterministic line-item, discount, tax, and total calculations; print-to-PDF through the browser; CSV export; cloud save/reopen and paid/unpaid status.
+- CSV/JSON analysis in-browser, optional XLSX parsing through SheetJS CDN, exact duplicate detection, blank-cell counts, numeric summaries, cleaned CSV export, JSON report export, and cloud-saved summary reports.
+- Private CRM leads with create/edit/search/filter/archive, CSV import/export, overdue follow-up counts, and email/WhatsApp message drafts.
+- Social campaign generation through the authenticated `mikrotekos-ai` Edge Function, editable output, JSON export, and cloud-saved campaigns.
+- Existing structured website workflow remains at [sites.html](sites.html); it publishes a safe structured page at `view-site.html?slug=...`, not an independent hosting deployment.
+
+The new isolated migration is `supabase/migrations/20261018_mikrotekos_real_business_tools.sql`. It creates `mikrotekos_campaigns`, `mikrotekos_invoices`, `mikrotekos_analysis_reports`, and `mikrotekos_leads`, each with RLS enabled and owner-only policies. File contents are analyzed locally; only summary metadata is saved.
+
 ## Current tools and features
 - Responsive bilingual landing page and service packages.
 - Content studio, text cleaner, budget planner, CV/cover-letter editor, website editor and JSON backup.
