@@ -221,10 +221,13 @@ set search_path = ''
 as $
 begin
   if new.status = 'published'
-     and (tg_op = 'INSERT' or old.status is distinct from 'published')
      and coalesce(auth.role(), '') <> 'service_role'
      and coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') <> 'admin' then
-    raise exception 'Publishing must be performed by the trusted publishing service';
+    if tg_op = 'INSERT' then
+      raise exception 'Publishing must be performed by the trusted publishing service';
+    elsif old.status is distinct from 'published' then
+      raise exception 'Publishing must be performed by the trusted publishing service';
+    end if;
   end if;
   return new;
 end;
