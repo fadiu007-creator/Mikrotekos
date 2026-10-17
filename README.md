@@ -32,7 +32,7 @@ The existing Supabase project zikos is shared with other apps. MikroTekos uses i
 ### Required launch setup
 1. **Configure real AI:** in Supabase Dashboard → Edge Functions → Secrets, add OPENAI_API_KEY. Optionally set OPENAI_MODEL (default is gpt-4.1-mini). Do not add this key to GitHub or backend-config.js. Without the key, AI generation reports that the provider is not configured and the content tool falls back to a manual prompt.
 2. **Assign the admin role securely:** create your account in account.html, then use the SQL Editor with the exact account email (see docs/admin-setup.md). This writes app_metadata, not user-editable metadata. Do not grant admin to an email you do not control.
-3. **Email delivery:** Supabase Auth must have working email/SMTP settings for production account confirmation and password reset. Default test email limits may apply.
+3. **Auth URL and email delivery:** in Supabase Authentication → URL Configuration, set the Site URL to the real deployed site origin and allowlist the account page URL (for example, the GitHub Pages or Cloudflare Pages origin plus /account.html). Configure working email/SMTP settings for production confirmation and password reset; default test email limits may apply.
 4. **Abuse prevention:** the service-request table accepts only bounded insert payloads from anonymous visitors and exposes no anonymous read access. Before advertising the form widely, add CAPTCHA/rate limiting and operational monitoring.
 5. **Hosting:** the website editor's hosted-page workflow serves safe structured pages at view-site.html?slug=... on the same static domain. It does not create custom domains or deploy independent files to a separate Cloudflare site.
 
