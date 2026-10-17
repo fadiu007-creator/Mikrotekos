@@ -12,24 +12,24 @@ Bilingual (Albanian / English) static website for AI, automation, web and other 
 
 This project is plain HTML, CSS and JavaScript; no build step or package installation is required.
 
-## Included
+## Online workspace MVP
 
-- Responsive landing page and custom service catalog
-- Search and category filters for custom services
-- Indicative euro starting prices for custom work
-- Service request form that opens the visitor's email application
-- Albanian / English language toggle
-- Browser-only AI prompt builder and text cleaner
-- **Five instant digital products with unlimited free use/downloads:** AI prompt pack, social content pack, business budget CSV, CV/cover letter kit, and website starter template
-- Product files are generated in the browser and downloaded directly; no account or request form is required
-- Privacy notice
+- Responsive landing page and custom service catalog.
+- Instant-product cards open the relevant on-site tool instead of downloading starter files.
+- Content studio: locally generated social/ad/idea drafts and AI prompts, editable text, copy, and saved drafts.
+- Text cleaner.
+- Budget planner with income/expense entries, live totals, goal percentage, and transaction deletion.
+- CV editor with live preview, cover-letter drafting, copy, and print / Save as PDF.
+- Website builder with editable content, color selection, live preview, project saving, and optional HTML export.
+- Local project list and JSON backup export.
+- On-page custom-service request tracker.
 
-## Current limitations
+## Important current limitations
 
-- Instant digital products and browser tools are free trials with no usage caps for now. There is no payment or checkout flow.
-- Downloads are client-generated starter files, not paid or access-controlled files.
-- The prompt builder creates a prompt locally; it does not call an AI model. Connect a model through a secure backend before advertising live AI generation.
-- The contact form opens the visitor's email application; it does not submit to a backend.
-- Replace `hello@mikrotekos.com` in `index.html` and `privacy.html` with a real monitored business email.
-- Prices shown for custom services are illustrative starting prices, not binding quotes.
-- Review privacy, consumer, tax, and business requirements for the countries you serve.
+- **Browser-local storage only:** projects, budget transactions, CV details and service requests remain in the current browser on this device. They are not uploaded to a server and will not sync across devices.
+- **No real account/authentication yet:** do not use local browser storage as a secure account system.
+- **Service requests are not delivered to MikroTekos:** the request tracker stores them locally; there is no server inbox or admin dashboard yet.
+- **No real website publishing/hosting yet:** the builder previews a site and can export HTML, but does not deploy it to a public URL.
+- **No live AI model connection:** content drafts are generated with local templates. A secure backend and model/API configuration are needed for real AI generation.
+- No checkout or payment flow. Prices shown for custom services are illustrative starting prices, not binding quotes.
+- Review privacy, consumer, tax, and business requirements for the countries served before launch.
