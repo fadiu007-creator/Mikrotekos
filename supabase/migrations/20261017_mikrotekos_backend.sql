@@ -167,7 +167,7 @@ create policy mikrotekos_sites_read_published on public.mikrotekos_published_sit
 drop policy if exists mikrotekos_sites_insert_owner on public.mikrotekos_published_sites;
 create policy mikrotekos_sites_insert_owner on public.mikrotekos_published_sites for insert to authenticated with check ((select auth.uid()) = user_id and status = 'draft');
 drop policy if exists mikrotekos_sites_update_owner_draft on public.mikrotekos_published_sites;
-create policy mikrotekos_sites_update_owner_draft on public.mikrotekos_published_sites for update to authenticated using ((select auth.uid()) = user_id and status = 'draft') with check ((select auth.uid()) = user_id and status = 'draft');
+create policy mikrotekos_sites_update_owner_draft on public.mikrotekos_published_sites for update to authenticated using ((select auth.uid()) = user_id and status = 'draft') with check ((select auth.uid()) = user_id and status in ('draft','published'));
 drop policy if exists mikrotekos_sites_admin_all on public.mikrotekos_published_sites;
 create policy mikrotekos_sites_admin_all on public.mikrotekos_published_sites for all to authenticated using ((select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin') with check ((select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
@@ -197,16 +197,3 @@ grant select, insert, update, delete on public.mikrotekos_profiles, public.mikro
 revoke all on function public.mikrotekos_create_profile() from public, anon, authenticated;
 revoke all on function public.mikrotekos_set_updated_at() from public, anon, authenticated;
 
-create or replace function public.mikrotekos_publish_site(p_site_id uuid)
-returns jsonb language plpgsql security definer set search_path = '' as $$
-declare v_site public.mikrotekos_published_sites;
-begin
- if auth.uid() is null then raise exception 'Sign in required'; end if;
- update public.mikrotekos_published_sites set status='published', published_at=now(), updated_at=now()
- where id=p_site_id and user_id=auth.uid() and status='draft' returning * into v_site;
- if not found then raise exception 'Draft not found or not owned by current user'; end if;
- return jsonb_build_object('id',v_site.id,'slug',v_site.slug,'title',v_site.title,'status',v_site.status,'published_at',v_site.published_at);
-end;
-$$;
-revoke all on function public.mikrotekos_publish_site(uuid) from public, anon;
-grant execute on function public.mikrotekos_publish_site(uuid) to authenticated;
