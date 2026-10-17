@@ -146,7 +146,7 @@ create policy mikrotekos_projects_delete_self on public.mikrotekos_projects for 
 
 drop policy if exists mikrotekos_requests_submit_public on public.mikrotekos_service_requests;
 create policy mikrotekos_requests_submit_public on public.mikrotekos_service_requests for insert to anon, authenticated with check (
- char_length(customer_name) between 1 and 200 and char_length(customer_email) between 3 and 320 and
+ status = 'received' and char_length(customer_name) between 1 and 200 and char_length(customer_email) between 3 and 320 and
  char_length(service_type) between 1 and 160 and char_length(details) between 1 and 10000 and
  (user_id is null or user_id = (select auth.uid()))
 );
