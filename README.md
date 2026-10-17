@@ -22,7 +22,7 @@ This project is plain HTML, CSS and JavaScript; no build step or package install
 - CV editor with live preview, cover-letter drafting, copy, and print / Save as PDF.
 - Website builder with editable content, color selection, live preview, project saving, and optional HTML export.
 - Local project list and JSON backup export.
-- On-page custom-service request form (currently opens the user's email app; no server-side inbox yet).
+- On-page custom-service request draft form (saves in this browser and downloads JSON; no server-side inbox yet).
 - Bilingual business tools page (`business-tools.html`): local FAQ-assistant prototype and basic local-SEO checklist/suggestion generator.
 - Three customer-facing test packages: Starter Website (€149–€299), Social Media Content (€99–€249/month), and Business Automation Starter (€199–€499 setup). These are proposed test prices, not verified market averages.
 
