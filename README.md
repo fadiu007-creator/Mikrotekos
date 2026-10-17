@@ -27,10 +27,10 @@ The existing Supabase project zikos is shared with other apps. MikroTekos uses i
 - FAQ/automation configuration can be saved to mikrotekos_automation_configs.
 - Website draft records and a controlled, text-only public website route (sites.html, view-site.html). Published pages render structured text fields, not arbitrary stored HTML, reducing script-injection risk.
 - Active service packages stored in mikrotekos_service_packages.
-- Authenticated Supabase Edge Function mikrotekos-ai is deployed for content/FAQ/SEO/automation prompts.
+- Authenticated Supabase Edge Function mikrotekos-ai is deployed for content/FAQ/SEO/automation prompts and uses Cloudflare Workers AI (open-weight Meta Llama 3.1 8B) instead of OpenAI.
 
 ### Required launch setup
-1. **Configure real AI:** in Supabase Dashboard → Edge Functions → Secrets, add OPENAI_API_KEY. Optionally set OPENAI_MODEL (default is gpt-4.1-mini). Do not add this key to GitHub or backend-config.js. Without the key, AI generation reports that the provider is not configured and the content tool falls back to a manual prompt.
+1. **Configure free-tier AI:** create a Cloudflare API token with Workers AI Read and Workers AI Edit permissions, and copy your Cloudflare Account ID. In Supabase Dashboard → Edge Functions → Secrets, set CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_AI_TOKEN. Optional: set CLOUDFLARE_AI_MODEL; the default is @cf/meta/llama-3.1-8b-instruct-fp8-fast. Never put the token in GitHub or backend-config.js. Cloudflare Workers AI currently includes 10,000 Neurons/day on its Free plan; quota/model limits apply and requests may fail when the allocation is exhausted. Do not enable paid usage unless you choose to.
 2. **Assign the admin role securely:** create your account in account.html, then use the SQL Editor with the exact account email (see docs/admin-setup.md). This writes app_metadata, not user-editable metadata. Do not grant admin to an email you do not control.
 3. **Auth URL and email delivery:** in Supabase Authentication → URL Configuration, set the Site URL to the real deployed site origin and allowlist the account page URL (for example, the GitHub Pages or Cloudflare Pages origin plus /account.html). Configure working email/SMTP settings for production confirmation and password reset; default test email limits may apply.
 4. **Abuse prevention:** the service-request table accepts only bounded insert payloads from anonymous visitors and exposes no anonymous read access. Before advertising the form widely, add CAPTCHA/rate limiting and operational monitoring.
@@ -49,7 +49,7 @@ The existing Supabase project zikos is shared with other apps. MikroTekos uses i
 Starter Website (€149–€299), Social Media Content (€99–€249/month), and Business Automation Starter (€199–€499 setup) are proposed starting prices, not verified market averages or binding quotes.
 
 ## Security notes
-- Never expose Supabase service-role keys or OpenAI keys in client files.
+- Never expose Supabase service-role keys or Cloudflare AI tokens in client files.
 - Admin checks use server-managed app_metadata.role, never user_metadata.
 - All MikroTekos tables have RLS enabled; request visibility and updates are restricted.
 - Review privacy, consumer, tax, and business requirements for the countries served before public launch.
