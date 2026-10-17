@@ -14,18 +14,22 @@ This project is plain HTML, CSS and JavaScript; no build step or package install
 
 ## Included
 
-- Responsive landing page and service catalog
-- Search and category filters
-- Indicative euro starting prices
+- Responsive landing page and custom service catalog
+- Search and category filters for custom services
+- Indicative euro starting prices for custom work
 - Service request form that opens the visitor's email application
 - Albanian / English language toggle
 - Browser-only AI prompt builder and text cleaner
+- **Five instant digital products with unlimited free use/downloads:** AI prompt pack, social content pack, business budget CSV, CV/cover letter kit, and website starter template
+- Product files are generated in the browser and downloaded directly; no account or request form is required
 - Privacy notice
 
-## Before launch
+## Current limitations
 
+- Instant digital products and browser tools are free trials with no usage caps for now. There is no payment or checkout flow.
+- Downloads are client-generated starter files, not paid or access-controlled files.
+- The prompt builder creates a prompt locally; it does not call an AI model. Connect a model through a secure backend before advertising live AI generation.
+- The contact form opens the visitor's email application; it does not submit to a backend.
 - Replace `hello@mikrotekos.com` in `index.html` and `privacy.html` with a real monitored business email.
-- Prices are illustrative starting prices, not binding quotes.
-- No online payments are enabled. Add a supported payment provider and server-side order verification before taking payments.
-- The prompt builder creates a prompt locally; it does not call an AI model. Connect a model through a secure backend before advertising AI generation.
+- Prices shown for custom services are illustrative starting prices, not binding quotes.
 - Review privacy, consumer, tax, and business requirements for the countries you serve.
