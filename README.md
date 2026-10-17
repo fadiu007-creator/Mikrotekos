@@ -43,9 +43,9 @@ Open [workspace.html](workspace.html) for the business tools workspace:
 - CSV/JSON analysis in-browser, optional XLSX parsing through SheetJS CDN, exact duplicate detection, blank-cell counts, numeric summaries, cleaned CSV export, JSON report export, and cloud-saved summary reports.
 - Private CRM leads with create/edit/search/filter/archive, CSV import/export, overdue follow-up counts, and email/WhatsApp message drafts.
 - Social campaign generation through the authenticated `mikrotekos-ai` Edge Function, editable output, JSON export, and cloud-saved campaigns.
-- Existing structured website workflow remains at [sites.html](sites.html); it publishes a safe structured page at `view-site.html?slug=...`, not an independent hosting deployment.
+- Website builder at [sites.html](sites.html) now includes three templates, live preview, editable business details, service/product cards, city, opening hours, logo URL, phone/email/WhatsApp/map links, and SEO metadata. Drafts save to Supabase and can be published as safe structured pages at `view-site.html?slug=...`; this is not an independent hosting deployment.
 
-The new isolated migration is `supabase/migrations/20261018_mikrotekos_real_business_tools.sql`. It creates `mikrotekos_campaigns`, `mikrotekos_invoices`, `mikrotekos_analysis_reports`, and `mikrotekos_leads`, each with RLS enabled and owner-only policies. File contents are analyzed locally; only summary metadata is saved.
+The new isolated migration is `supabase/migrations/20261018_mikrotekos_real_business_tools.sql`. CI runs `tests/check-inline-scripts.mjs` and `tests/business-core.test.mjs` on pushes to check inline JavaScript syntax, workspace wiring, invoice math, CSV parsing, and CSV formula-injection handling. It creates `mikrotekos_campaigns`, `mikrotekos_invoices`, `mikrotekos_analysis_reports`, and `mikrotekos_leads`, each with RLS enabled and owner-only policies. File contents are analyzed locally; only summary metadata is saved.
 
 ## Current tools and features
 - Responsive bilingual landing page and service packages.
