@@ -33,3 +33,10 @@ This project is plain HTML, CSS and JavaScript; no build step or package install
 - **No live AI model connection:** content drafts are generated with local templates. A secure backend and model/API configuration are needed for real AI generation.
 - No checkout or payment flow. Prices shown for custom services are illustrative starting prices, not binding quotes.
 - Review privacy, consumer, tax, and business requirements for the countries served before launch.
+
+## Backend preparation (not deployed)
+
+- `docs/supabase-schema-draft.sql` is a **review draft only** for profiles, cloud projects, customer service requests, and published websites, including row-level security policies.
+- The SQL has **not** been run against a database. Before applying it, create or explicitly select a dedicated MikroTekos Supabase project; do not reuse the shared `zikos` project used by other apps.
+- Real service-request delivery needs a server/Edge Function with validation and rate limiting. Anonymous visitors must not receive direct database insert access. Admin permissions must be assigned server-side through trusted app metadata.
+- Website publishing still needs a controlled publishing service/hosting integration. Saving HTML in a database alone does not publish a secure website.
