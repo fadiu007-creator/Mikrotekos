@@ -162,15 +162,8 @@ create policy "Admins can manage service packages"
 create policy "Users can read their own deployment records"
   on public.website_deployments for select to authenticated
   using ((select auth.uid()) = user_id or (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-create policy "Users can create their own deployment records"
-  on public.website_deployments for insert to authenticated
-  with check ((select auth.uid()) = user_id);
-create policy "Users can update their own deployment records"
-  on public.website_deployments for update to authenticated
-  using ((select auth.uid()) = user_id)
-  with check ((select auth.uid()) = user_id);
-create policy "Admins can update deployment records"
-  on public.website_deployments for update to authenticated
+create policy "Admins can manage deployment records"
+  on public.website_deployments for all to authenticated
   using ((select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
   with check ((select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
@@ -220,6 +213,26 @@ create policy "Admins can delete service requests"
   using ((select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
 -- Published pages are publicly readable; drafts remain owner-only.
+-- Only a trusted publishing backend or server-assigned admin may mark a site public.
+create or replace function public.mikrotekos_guard_site_publish()
+returns trigger
+language plpgsql
+set search_path = ''
+as $
+begin
+  if new.status = 'published'
+     and old.status is distinct from 'published'
+     and coalesce(auth.role(), '') <> 'service_role'
+     and coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') <> 'admin' then
+    raise exception 'Publishing must be performed by the trusted publishing service';
+  end if;
+  return new;
+end;
+$;
+drop trigger if exists published_sites_guard_publish on public.published_sites;
+create trigger published_sites_guard_publish before update on public.published_sites
+for each row execute function public.mikrotekos_guard_site_publish();
+
 create policy "Published sites are public and drafts are owner-only"
   on public.published_sites for select to anon, authenticated
   using (
