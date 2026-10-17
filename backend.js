@@ -21,7 +21,31 @@
           { user_id: user.id, data: JSON.parse(JSON.stringify(state)), updated_at: new Date().toISOString() },
           { onConflict: "user_id" }
         );
-        if (error) console.warn("MikroTekos cloud save failed:", error.message);
+        if (error) throw error;
+        const projects = Array.isArray(state.projects) ? state.projects : [];
+        const rows = projects.map(function (p) {
+          const allowed = ["content", "social_content", "budget", "cv", "website", "automation", "seo"];
+          return {
+            user_id: user.id,
+            local_id: String(p.id),
+            project_type: allowed.includes(p.type) ? p.type : "content",
+            title: String(p.title || "Untitled project").slice(0, 200),
+            content: p.content === undefined ? {} : p.content,
+            updated_at: p.updated || new Date().toISOString()
+          };
+        });
+        if (rows.length) {
+          const { error: projectError } = await db.from("mikrotekos_projects").upsert(rows, { onConflict: "user_id,local_id" });
+          if (projectError) throw projectError;
+        }
+        const { data: existing, error: listError } = await db.from("mikrotekos_projects").select("local_id").eq("user_id", user.id);
+        if (listError) throw listError;
+        const wanted = new Set(rows.map(function (p) { return p.local_id; }));
+        const removed = (existing || []).map(function (p) { return p.local_id; }).filter(function (id) { return !wanted.has(id); });
+        if (removed.length) {
+          const { error: deleteError } = await db.from("mikrotekos_projects").delete().eq("user_id", user.id).in("local_id", removed);
+          if (deleteError) throw deleteError;
+        }
       } catch (e) { console.warn("MikroTekos cloud save failed:", e); }
     }, 700);
   };
