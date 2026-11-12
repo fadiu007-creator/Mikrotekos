@@ -23,3 +23,13 @@ assert.deepEqual(core.parseCSV('name,notes\n"Tea, green","line 1\nline 2"'), [
 assert.equal(core.csvEscape("=1+1"), '"\'=1+1"');
 assert.equal(core.csvEscape(12.5), '"12.5"');
 console.log("Business core tests passed: invoice math, discount/tax rounding, quoted CSV, and CSV formula injection.");
+
+const trading = core.calculateTradingTax([1000, 2000, -5000, 500]);
+assert.deepEqual(trading, {gains: 3500, losses: 5000, net: -1500, taxable: 0, tax: 0});
+assert.equal(core.calculateTradingTax([3000]).tax, 0);
+assert.equal(core.calculateTradingTax([5400]).tax, 192);
+assert.equal(core.calculateTradingTax([7000]).tax, 352);
+assert.equal(core.calculateTradingTax([10000]).tax, 652);
+assert.throws(() => core.calculateTradingTax([]), /at least one/i);
+assert.throws(() => core.calculateTradingTax([100, "bad"]), /finite number/i);
+console.log("Trading tax tests passed: loss scenario, tax brackets, cent precision, and invalid inputs.");
