@@ -53,6 +53,7 @@ The new isolated migration is `supabase/migrations/20261018_mikrotekos_real_busi
 - Cloud workspace sync for signed-in users; local storage remains available for offline/guest use.
 - Business FAQ assistant with cloud configuration; uses the AI Edge Function when signed in and configured, with a local keyword fallback.
 - Basic local SEO checklist/suggestion generator. It does not query Google rankings or edit Google Business Profile.
+- Trading & investment calculators at [trading-calculators.html](trading-calculators.html): APY/APR compounding with contributions and fees, position sizing by risk, trade P&L and break-even, DCA weighted average entry, and a simplified leverage/liquidation estimator. Calculations run locally and are educational estimates, not exchange execution or investment advice.
 - Website draft/publish workflow with a public text-only page.
 - Customer service request submission and admin status workflow.
 
